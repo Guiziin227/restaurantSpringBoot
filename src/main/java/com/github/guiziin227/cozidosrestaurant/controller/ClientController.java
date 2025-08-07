@@ -5,7 +5,9 @@ import com.github.guiziin227.cozidosrestaurant.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,9 +27,24 @@ public class ClientController {
         return ResponseEntity.ok(savedClient);
     }
 
+    @PutMapping("/{cpf}")
+    public ResponseEntity<Client> update(@PathVariable String cpf,@RequestBody Client client) {
+        Client updatedClient = clientService.update(cpf,client);
+        return ResponseEntity.ok(updatedClient);
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<Client> getByCpf(@PathVariable String cpf) {
+        Client client = clientService.findByCpf(cpf);
+        if (client == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(client);
+    }
+
     @GetMapping
-    public ResponseEntity<Client> getAll() {
+    public ResponseEntity<List<Client>> getAll() {
         List<Client> clients = clientService.findAll();
-        return ResponseEntity.ok().body((Client) clients);
+        return ResponseEntity.ok().body(clients);
     }
 }
