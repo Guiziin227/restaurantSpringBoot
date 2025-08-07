@@ -4,7 +4,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class GenericAuditListener {
 
