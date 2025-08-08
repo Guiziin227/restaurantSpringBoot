@@ -1,8 +1,11 @@
 package com.github.guiziin227.cozidosrestaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.guiziin227.cozidosrestaurant.listener.Auditable;
+import com.github.guiziin227.cozidosrestaurant.listener.GenericAuditListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +19,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -24,6 +26,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_waiter")
+@EntityListeners(GenericAuditListener.class)
 public class Waiter implements Serializable, Auditable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -38,8 +41,10 @@ public class Waiter implements Serializable, Auditable {
     @Column(length = 7, nullable = false, unique = true)
     private String accessCode;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
 
 

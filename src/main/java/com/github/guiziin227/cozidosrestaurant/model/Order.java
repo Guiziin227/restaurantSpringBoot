@@ -1,9 +1,11 @@
 package com.github.guiziin227.cozidosrestaurant.model;
 
 import com.github.guiziin227.cozidosrestaurant.listener.Auditable;
+import com.github.guiziin227.cozidosrestaurant.listener.GenericAuditListener;
 import com.github.guiziin227.cozidosrestaurant.model.enums.StatusOrder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "tb_order")
+@EntityListeners(GenericAuditListener.class)
 public class Order implements Serializable, Auditable {
 
     @Serial
