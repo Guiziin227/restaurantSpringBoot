@@ -29,8 +29,8 @@ public class Waiter implements Serializable, Auditable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(length = 120, nullable = false)
     private String name;
@@ -41,6 +41,7 @@ public class Waiter implements Serializable, Auditable {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
 
     @Override
     public boolean equals(Object o) {
