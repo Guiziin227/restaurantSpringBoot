@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class TableService {
     @Autowired
     private TableRepository tableRepository;
 
+    @Transactional
     public Tables create(Tables table) {
         if (tableRepository.existsByNumber(table.getNumber())) {
             logger.warn("Table with ID {} already exists!", table.getId());
@@ -27,12 +29,23 @@ public class TableService {
         return tableRepository.save(table);
     }
 
+
+
+    @Transactional(readOnly = true)
+    public Tables findById(Long id) {
+        logger.info("Finding table with ID {}", id);
+        return tableRepository.findById(id)
+                .orElseThrow(() -> new UserExistsException("Table with ID " + id + " not found."));
+    }
+
+    @Transactional(readOnly = true)
     public Tables findByNumber(Integer number) {
         logger.info("Finding table with number {}", number);
         return tableRepository.findByNumber(number)
                 .orElseThrow(() -> new UserExistsException("Table with ID " + number + " not found."));
     }
 
+    @Transactional(readOnly = true)
     public List<Tables> findAll() {
         logger.info("Retrieving all tables");
         return tableRepository.findAll();
