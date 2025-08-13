@@ -1,5 +1,7 @@
 package com.github.guiziin227.cozidosrestaurant.service;
 
+import com.github.guiziin227.cozidosrestaurant.exceptions.OrderConflictException;
+import com.github.guiziin227.cozidosrestaurant.exceptions.UserNotFoundException;
 import com.github.guiziin227.cozidosrestaurant.model.Order;
 import com.github.guiziin227.cozidosrestaurant.model.Tables;
 import com.github.guiziin227.cozidosrestaurant.model.Waiter;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -36,7 +39,7 @@ public class OrderService {
 
         if (table.getStatus() != StatusTable.AVAILABLE) {
             logger.warn("Table {} is already occupied", table.getNumber());
-            throw new IllegalStateException("Table " + table.getNumber() + " is already occupied.");
+            throw new OrderConflictException("Table " + table.getNumber() + " is already occupied.");
         }
 
         if (waiter == null) {
@@ -48,6 +51,7 @@ public class OrderService {
             order.setStatus(StatusOrder.IN_PROGRESS);
         }
 
+        table.setStatus(StatusTable.OCCUPIED);
         order.setWaiter(waiter);
         order.setTable(table);
 
@@ -59,18 +63,24 @@ public class OrderService {
     public Order findById(Long id) {
         logger.info("Finding order with ID {}", id);
         return orderRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("Order with ID " + id + " not found."));
+                .orElseThrow(() -> new UserNotFoundException("Order with ID " + id + " not found."));
     }
 
     @Transactional(readOnly = true)
-    public Order findByTableId(Long tableId) {
-        logger.info("Finding order for table with ID {}", tableId);
-        return orderRepository.findByTableId(tableId)
-                .orElseThrow(() -> new IllegalStateException("No order found for table with ID " + tableId));
+    public List<Order> findByTableId(Long tableId) {
+        logger.info("Finding orders for table with ID {}", tableId);
+        List<Order> orders = orderRepository.findByTableId(tableId);
+
+        if (orders.isEmpty()) {
+            logger.warn("No orders found for table with ID {}", tableId);
+            throw new UserNotFoundException("No orders found for table with ID " + tableId);
+        }
+
+        return orders;
     }
 
     @Transactional(readOnly = true)
-    public List<Order> findAll(){
+    public List<Order> findAll() {
         logger.info("Retrieving all orders");
         return orderRepository.findAll();
     }

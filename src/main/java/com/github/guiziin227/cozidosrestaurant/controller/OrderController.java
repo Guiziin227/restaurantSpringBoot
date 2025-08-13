@@ -51,12 +51,12 @@ public class OrderController {
     }
 
     @GetMapping("/table/{tableId}")
-    public ResponseEntity<OrderResponseDTO> getOrdersByTableId(@PathVariable Long tableId) {
-        Order order = orderService.findByTableId(tableId);
-        if (order == null) {
+    public ResponseEntity<List<OrderResponseDTO>> getOrdersByTableId(@PathVariable Long tableId) {
+        List<Order> orders = orderService.findByTableId(tableId);
+        if (orders.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(orderMapper.toResponseDTO(order));
+        return ResponseEntity.ok(orderMapper.toResponseDTOList(orders));
     }
 
 }
