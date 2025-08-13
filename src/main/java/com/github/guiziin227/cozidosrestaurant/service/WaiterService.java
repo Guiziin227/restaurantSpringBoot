@@ -31,6 +31,13 @@ public class WaiterService {
         return waiterRepository.save(waiter);
     }
 
+    @Transactional
+    public Waiter findById(Long id) {
+        logger.info("Finding waiter with ID {}", id);
+        return waiterRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Waiter with ID " + id + " not found."));
+    }
+
 
     @Transactional(readOnly = true)
     public Waiter findByAccessCode(String accessCode) {
