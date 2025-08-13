@@ -4,11 +4,14 @@ import com.github.guiziin227.cozidosrestaurant.dto.request.ClientRequestDTO;
 import com.github.guiziin227.cozidosrestaurant.dto.request.OrderRequestDTO;
 import com.github.guiziin227.cozidosrestaurant.dto.response.ClientResponseDTO;
 import com.github.guiziin227.cozidosrestaurant.dto.response.OrderResponseDTO;
+import com.github.guiziin227.cozidosrestaurant.dto.response.summary.OrderSummaryResponseDTO;
 import com.github.guiziin227.cozidosrestaurant.model.Client;
 import com.github.guiziin227.cozidosrestaurant.model.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {WaiterMapper.class, TableMapper.class})
 public interface OrderMapper extends GenericMapper<Order, OrderRequestDTO, OrderResponseDTO> {
@@ -33,4 +36,11 @@ public interface OrderMapper extends GenericMapper<Order, OrderRequestDTO, Order
     @Mapping(source = "tableId", target = "table.id")
     @Override
     void updateEntityFromDTO(OrderRequestDTO requestDTO, @MappingTarget Order entity);
+
+    @Mapping(source = "waiter.id", target = "waiterId")
+    @Mapping(source = "table.id", target = "tableId")
+    OrderSummaryResponseDTO toSummaryResponseDTO(Order entity);
+
+
+    List<OrderSummaryResponseDTO> toSummaryResponseDTOList(List<Order> orders);
 }

@@ -2,6 +2,7 @@ package com.github.guiziin227.cozidosrestaurant.controller;
 
 import com.github.guiziin227.cozidosrestaurant.dto.request.OrderRequestDTO;
 import com.github.guiziin227.cozidosrestaurant.dto.response.OrderResponseDTO;
+import com.github.guiziin227.cozidosrestaurant.dto.response.summary.OrderSummaryResponseDTO;
 import com.github.guiziin227.cozidosrestaurant.mapper.OrderMapper;
 import com.github.guiziin227.cozidosrestaurant.model.Order;
 import com.github.guiziin227.cozidosrestaurant.service.OrderService;
@@ -34,9 +35,9 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
+    public ResponseEntity<List<OrderSummaryResponseDTO>> getAllOrders() {
         List<Order> orders = orderService.findAll();
-        List<OrderResponseDTO> responseDTOs = orderMapper.toResponseDTOList(orders);
+        List<OrderSummaryResponseDTO> responseDTOs = orderMapper.toSummaryResponseDTOList(orders);
         return ResponseEntity.ok(responseDTOs);
     }
 
