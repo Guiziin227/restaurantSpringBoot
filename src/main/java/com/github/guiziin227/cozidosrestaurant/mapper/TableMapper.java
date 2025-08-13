@@ -10,6 +10,8 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface TableMapper extends GenericMapper<Tables, TableRequestDTO, TableResponseDTO> {
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Override
     Tables toEntity(TableRequestDTO requestDTO);
 
