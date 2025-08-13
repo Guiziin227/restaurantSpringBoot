@@ -3,15 +3,18 @@ package com.github.guiziin227.cozidosrestaurant.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.github.guiziin227.cozidosrestaurant.model.enums.StatusTable;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public record TableResponseDTO(
-        Integer id,
+        Long id,
         Integer number,
         Integer capacity,
-        StatusTable statusTable,
+        StatusTable status,
 
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        String createdAt,
+        LocalDateTime createdAt,
         @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-        String updatedAt
+        LocalDateTime updatedAt
 ) {
 }
