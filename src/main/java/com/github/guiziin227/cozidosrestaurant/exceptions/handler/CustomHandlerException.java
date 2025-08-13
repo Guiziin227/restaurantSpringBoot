@@ -1,6 +1,7 @@
 package com.github.guiziin227.cozidosrestaurant.exceptions.handler;
 
 import com.github.guiziin227.cozidosrestaurant.exceptions.ExceptionResponse;
+import com.github.guiziin227.cozidosrestaurant.exceptions.OrderConflictException;
 import com.github.guiziin227.cozidosrestaurant.exceptions.UserExistsException;
 import com.github.guiziin227.cozidosrestaurant.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class CustomHandlerException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({UserExistsException.class})
+    @ExceptionHandler({OrderConflictException.class,UserExistsException.class})
     public final ResponseEntity<ExceptionResponse> handleExistsException(Exception ex, WebRequest request) {
         ExceptionResponse resp = new ExceptionResponse(
                 new Date(),
